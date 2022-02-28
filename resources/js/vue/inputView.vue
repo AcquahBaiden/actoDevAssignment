@@ -69,11 +69,10 @@ export default {
                 generatedHand
             );
 
-            //show who won
             let userWon;
             userHandScore > generatedHandScore ? (userWon = true):(userWon = false);
 
-            //save to api
+            //object to save
             const roundToSave = {
                 userName: this.user_name,
                 userHand: this.userInput,
@@ -82,29 +81,19 @@ export default {
                 generatedScore: generatedHandScore,
                 userWon,
             };
-            this.scoreData = {
-                userName: this.user_name,
-                userHand: userInputArray.join(""),
-                generatedHand: generatedHand.join(""),
-                userScore: userHandScore,
-                generatedScore: generatedHandScore,
-                userWon,
-            };
 
             this.addRoundToDB(roundToSave)
                 .then((response) => {
-
                     if(response.data.code == 422){
                         this.setErrors(response.data.errors);
                         return
                     }
+                    this.scoreData = response.data;
                     this.userInput = "";
                     this.showScore = true;
                     this.$emit("reloadlist");
                 })
                 .catch((e) => {
-                    console.log(e);
-                    console.log(e.response);
                     this.errorStatus = true;
                     if(e.response.status === 422){
                         this.validationErrors = e.response.data.errors;

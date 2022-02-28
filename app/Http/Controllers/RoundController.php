@@ -36,8 +36,6 @@ class RoundController extends Controller
      */
     public function store(Request $request)
     {
-
-
         $validator = Validator::make($request->all(),[
             'userName' => 'bail|required|max:255',
             'userHand'=> new ValidHand,
@@ -50,7 +48,6 @@ class RoundController extends Controller
         if($validator->fails()){
             return response()->json(['errors'=>$validator->errors(), 'code'=>422]);
         }
-        // $validated = $validator->validate();
         return $validator->validate();
 
 
